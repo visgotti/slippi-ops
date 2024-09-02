@@ -1,0 +1,31 @@
+
+@mixin responsive-scale-by-width($start-scale, $end-scale, $start-width, $end-width, $interval) {
+  // Apply the initial scale at max width
+  transform: scale($start-scale);
+
+  // Calculate total steps
+  $steps: calc(($start-width - $end-width) / $interval);
+
+  // Loop through each step
+  @for $i from 0 through $steps {
+    // Calculate the current width based on step
+    $current-width: calc($start-width - ($i * $interval));
+    // Calculate the current scale based on step
+    $fraction: calc(($start-width - $current-width) / ($start-width - $end-width));
+    $current-scale: calc($start-scale - ($start-scale - $end-scale) * $fraction);
+
+    @media screen and (max-width: $current-width) {
+      transform: scale($current-scale);
+    }
+  }
+}
+
+@mixin inner-outline($width, $color) {
+  box-shadow:inset 0px 0px 0px $width $color !important;
+}
+
+@mixin inner-outline-top-bottom($width, $color) {
+  box-shadow: 
+    inset 0 $width 0 0 $color, /* Top outline */
+    inset 0 0 - $width 0 $color; /* Bottom outline */
+}

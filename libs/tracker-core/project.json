@@ -1,0 +1,17 @@
+{
+  "name": "tracker-core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/tracker-core/src",
+  "projectType": "library",
+  "tags": [],
+  "implicitDependencies": ["types", "node-utils", "utils", "sqllite"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../coverage/libs/tracker-core"
+      }
+    }
+  }
+}

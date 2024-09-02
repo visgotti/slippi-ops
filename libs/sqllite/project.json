@@ -1,0 +1,9 @@
+{
+  "name": "sqllite",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/sqllite/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project sqllite --web",
+  "targets": {}
+}

@@ -1,0 +1,39 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
+  "include": [
+    "electron.vite.config.*", 
+    "src/main/**/*",
+    "src/preload/**/*",
+    "../../libs/tracker-core",
+     "../../libs/node-utils",
+     "../../libs/utils",
+     "../../libs/types"
+  ],
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noImplicitAny": false,
+    "rootDir": "../../",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "composite": true,
+    "types": ["electron-vite/node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@slippiops/node-utils": ["../../libs/node-utils/src/index.ts"],
+      "@slippiops/sqllite": ["../../libs/sqllite/src/index.ts"],
+      "@slippiops/tracker-core": ["../../libs/tracker-core/src/index.ts"],
+      "@slippiops/types": ["../../libs/types/src/index.ts"],
+      "@slippiops/ui": ["../../libs/ui/src/index.ts"],
+      "@slippiops/utils": ["../../libs/utils/src/index.ts"]
+    }
+  }
+}

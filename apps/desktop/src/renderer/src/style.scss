@@ -1,0 +1,190 @@
+:root {
+  --primary-color-light: #ef63cf;
+  --primary-color: #de45ba;
+  --primary-color-hover: #c63da6;
+  --toggle-bg-on: #de45ba;
+  --toggle-border-on: #de45ba;
+  --background-color: #1e1e1e;
+  --text-color: #f5f5f5;
+  --card-background-color: #2e2e2e;
+  --card-background-color-hover: #222222;
+  --highlight-blue: #007bff;
+  --highlight-blue-hover: #005dc0;
+  --border-color: #444;
+  --border-color-light: #888;
+  --muted-text-color: #ccc;
+  --warning-background-color: #4b3c15;
+  --warning-text-color: #f5df90;
+  --highlight-yellow: #e5ff50;
+  --lose-red: #d81f1f;
+  --win-green: #00b140;
+  --warning-red: 
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-start, .flex-start-column, .flex-start-col, .flex-col-start, .flex-column-start {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  &.flex-row {
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+.flex-start-row, .flex-row-start {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.flex-end, .flex-end-column, .flex-end-col, .flex-col-end, .flex-column-end, .flex-col-end {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  &.flex-row {
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+.flex-end-row, .flex-row-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.flex-gap-5 {
+  display: flex;
+  gap: 5px;
+}
+.flex-gap-6 {
+  display: flex;
+  gap: 6px;
+}
+.flex-gap-7 {
+  display: flex;
+  gap: 7px;
+}
+.flex-gap-8 {
+  display: flex;
+  gap: 8px;
+}
+.flex-gap-9 {
+  display: flex;
+  gap: 9px;
+}
+.flex-gap-10 {
+  display: flex;
+  gap: 10px;
+}
+.flex-gap-11 {
+  display: flex;
+  gap: 11px;
+}
+.flex-gap-12 {
+  display: flex;
+  gap: 12px;
+}
+.flex-gap-13 {
+  display: flex;
+  gap: 13px;
+}
+.flex-gap-14 {
+  display: flex;
+  gap: 14px;
+}
+.flex-gap-15 {
+  display: flex;
+  gap: 15px;
+}
+.flex-gap-16 {
+  display: flex;
+  gap: 16px;
+}
+.flex-gap-17 {
+  display: flex;
+  gap: 17px;
+}
+.flex-gap-18 {
+  display: flex;
+  gap: 18px;
+}
+.flex-gap-19 {
+  display: flex;
+  gap: 19px;
+}
+.flex-gap-20 {
+  display: flex;
+  gap: 20px;
+}
+
+.full-screen {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+button {
+  &:hover {
+    background-color: var(--primary-color-hover) !important;
+  }
+}
+
+.success {
+  color: var( --win-green);
+}
+
+.error {
+  color: red;
+}
+
+html, body, div, span, p {
+  font-family: Arial, sans-serif;
+}
+html, body, #app {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  height: 100%;
+  max-height: 100%;
+  min-height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--background-color) var(--card-background-color);
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--card-background-color);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--background-color);
+    border-radius: 10px;
+    border: 2px solid var(--border-color-light);
+  }

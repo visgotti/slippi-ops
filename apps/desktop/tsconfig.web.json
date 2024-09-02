@@ -1,0 +1,23 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
+  "include": [
+    "src/renderer/src/env.d.ts",
+    "src/renderer/src/**/*",
+    "src/renderer/src/**/*.vue",
+    "src/preload/*.d.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "composite": true,
+    "noUnusedLocals": false,
+    "paths": {
+      "@/*": ["src/renderer/src/*"],
+      "@slippiops/node-utils": ["../../libs/node-utils/src/index.ts"],
+      "@slippiops/sqllite": ["../../libs/sqllite/src/index.ts"],
+      "@slippiops/tracker-core": ["../../libs/tracker-core/src/index.ts"],
+      "@slippiops/types": ["../../libs/types/src/index.ts"],
+      "@slippiops/ui": ["../../libs/ui/src/index.ts"],
+      "@slippiops/utils": ["../../libs/utils/src/index.ts"]
+    }
+  }
+}
