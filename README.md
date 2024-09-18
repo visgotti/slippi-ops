@@ -1,3 +1,6 @@
+Installer can be downloaded here:
+https://drive.google.com/file/d/1CC983a4O3RHs020YUc3gGauGHAv-96BP/view?usp=sharing
+
 # Screen shots
 
 (build instructions in next section)
