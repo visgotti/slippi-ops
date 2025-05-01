@@ -396,14 +396,14 @@ export class MatchTracker extends MatchTrackerDAL {
   /**
    * 
    * @param path - path to search for .slp files
-   * @param folderTimetstamps - lookup of directories and the last time they were checked so we can know if we can skip it.
+   * @param folderTimestamps - lookup of directories and the last time they were checked so we can know if we can skip it.
    * @returns valid folders and files
    */
-  private getSlippiFileAndFolders (path: string, folderTimetstamps?: {[key: string]: number }, checkForDups=false) : { duplicates: string[], folders: string[], files: string[], } {
+  private getSlippiFileAndFolders (path: string, folderTimestamps?: {[key: string]: number }, checkForDups=false) : { duplicates: string[], folders: string[], files: string[], } {
    
     const returnObj : { folders: string[], files: string[], duplicates: string[], } = { folders: [], files: [], duplicates: [], };
     if(this.opts.recursivelyAllPaths) {
-      const folders = readFoldersRecursively(path, folderTimetstamps || {});
+      const folders = readFoldersRecursively(path, folderTimestamps || {});
       for(let i = 0; i < folders.length; i++) {
         returnObj.folders.push(folders[i]);
         const _files = readFiles(folders[i]).filter(f => f.endsWith('.slp'));
@@ -412,7 +412,7 @@ export class MatchTracker extends MatchTrackerDAL {
         }
       }
     } else {
-      if(!folderTimetstamps || (!(path in folderTimetstamps) || folderTimetstamps[path] < fs.statSync(path).mtimeMs)) {
+      if(!folderTimestamps || (!(path in folderTimestamps) || folderTimestamps[path] < fs.statSync(path).mtimeMs)) {
         returnObj.folders.push(path);
         returnObj.files.push(...readFiles(path).filter(f => f.endsWith('.slp')));
       }
@@ -435,9 +435,9 @@ export class MatchTracker extends MatchTrackerDAL {
     this.resetRecentTrackedResults();
     const oldMeta = this.getMeta();
     this.emit(TRACKER_EVENTS.META, oldMeta);
-    const { folderTimetstamps } = oldMeta;
+    const { folderTimestamps } = oldMeta;
     console.time('check-exist')
-    const { folders, files } = this.getSlippiFileAndFolders(path, folderTimetstamps);    
+    const { folders, files } = this.getSlippiFileAndFolders(path, folderTimestamps);    
     const notExists = await checkFilesNotExist(this.db!, "results", files, 500, false);
     const stillRemaining = await checkFilesNotExist(this.db!, "invalid_results", notExists, 500, true);
     // incase the same slippi file is in two directories, catch it here...
@@ -478,12 +478,12 @@ export class MatchTracker extends MatchTrackerDAL {
           this.emit(TRACKER_EVENTS.PARSE_FINISH, finalFilesToParse.length);
           if(!this.cancelledFileParsing) {
              const prevMeta = this.getMeta();
-             const finalFolderTimestamps : {[key: string]: number } = prevMeta.folderTimetstamps || {};
+             const finalFolderTimestamps : {[key: string]: number } = prevMeta.folderTimestamps || {};
              folders.forEach(f => {
               finalFolderTimestamps[f] = Date.now();
             });
              this.updateMeta({
-                folderTimetstamps: finalFolderTimestamps,
+                folderTimestamps: finalFolderTimestamps,
              })
           }
         });

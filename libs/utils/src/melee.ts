@@ -50,10 +50,10 @@ export function characterNamesAreTheSame(name1: string, name2: string) {
 
 export async function fetchUserProfile(code: string) {
   const query = {
-    operationName: "AccountManagementPageQuery",
+    operationName: "UserProfilePageQuery",
     variables: { cc: code, uid: code },
     query: `
-      fragment profileFields on NetplayProfile {
+      fragment profileFieldsV2 on NetplayProfileV2 {
         id
         ratingOrdinal
         ratingUpdateCount
@@ -63,14 +63,13 @@ export async function fetchUserProfile(code: string) {
         dailyRegionalPlacement
         continent
         characters {
-          id
           character
           gameCount
           __typename
         }
         __typename
       }
-      
+
       fragment userProfilePage on User {
         fbUid
         displayName
@@ -85,11 +84,11 @@ export async function fetchUserProfile(code: string) {
           __typename
         }
         rankedNetplayProfile {
-          ...profileFields
+          ...profileFieldsV2
           __typename
         }
-        netplayProfiles {
-          ...profileFields
+        rankedNetplayProfileHistory {
+          ...profileFieldsV2
           season {
             id
             startedAt
@@ -102,8 +101,8 @@ export async function fetchUserProfile(code: string) {
         }
         __typename
       }
-      
-      query AccountManagementPageQuery($cc: String!, $uid: String!) {
+
+      query UserProfilePageQuery($cc: String!, $uid: String!) {
         getUser(fbUid: $uid) {
           ...userProfilePage
           __typename
@@ -123,23 +122,9 @@ export async function fetchUserProfile(code: string) {
     const response = await axios.post('https://gql-gateway-dot-slippi.uc.r.appspot.com/graphql', query, {
       headers: {
         'Accept': '*/*',
-        'Accept-Encoding': 'gzip, deflate, br, zstd',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Apollographql-Client-Name': 'slippi-web',
-        'Cache-Control': 'no-cache',
-        'Content-Length': JSON.stringify(query).length,
         'Content-Type': 'application/json',
         'Origin': 'https://slippi.gg',
-        'Pragma': 'no-cache',
-        'Priority': 'u=1, i',
         'Referer': 'https://slippi.gg/',
-        'Sec-Ch-Ua': '"Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
-        'Sec-Ch-Ua-Mobile': '?0',
-        'Sec-Ch-Ua-Platform': '"Windows"',
-        'Sec-Fetch-Dest': 'empty',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Site': 'cross-site',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
       }
     });
     return response.data;

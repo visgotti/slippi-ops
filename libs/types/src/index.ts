@@ -6,7 +6,7 @@ export type MatchTrackerMetaData = {
 	unrankedElo: number,
   lastUsedCode: string,
   lastUsedUserId: string,
-  folderTimetstamps: {[key: string]: number },
+  folderTimestamps: {[key: string]: number },
   detectedUserCodes: {[key: string]: string },
 }
 

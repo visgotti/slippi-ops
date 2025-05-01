@@ -24,7 +24,7 @@ const metaDataFile = 'slippi-ops.meta.json'
 const INVALID_GAMES_FILE = 'invalid_games.txt';
 
 const defaultMeta = () => ({
-  folderTimetstamps: {},
+  folderTimestamps: {},
   detectedUserCodes: {}, 
   lastUsedCode: '',
   lastUsedUserId: '',
@@ -181,7 +181,7 @@ export class MatchTrackerDAL extends EventEmitter {
     ]
   }
 
-  private getOponentPlayerWhere(
+  private getOpponentPlayerWhere(
     opponentPlayerWhere: Partial<UnprefixedResultData> = {}, 
     yourPlayerWhere: Partial<UnprefixedResultData> = {},
     otherQueryParams: Partial<Omit<GameResults, 'raw' | 'notes' | 'player1Ranks' | 'player2Ranks'>> = {}
@@ -266,13 +266,13 @@ export class MatchTrackerDAL extends EventEmitter {
 
     */
     const timesPlayedAgainst = await countRows(this.db!, columnDefs, 'results', {
-      where: this.getOponentPlayerWhere({
+      where: this.getOpponentPlayerWhere({
         character: characterId,
       }, otherQueryParam, stageParam)
     });
 
     const timesLostAgainst = await countRows(this.db!, columnDefs, 'results', {
-      where: this.getOponentPlayerWhere({
+      where: this.getOpponentPlayerWhere({
         character: characterId,
         won: true,
       }, otherQueryParam, stageParam)
@@ -761,7 +761,7 @@ export class MatchTrackerDAL extends EventEmitter {
             CASE
               WHEN player1Code IN (${codeString}) THEN ${this.getCharacterNameCase('player1Character')}
               WHEN player2Code IN (${codeString}) THEN ${this.getCharacterNameCase('player2Character')}
-              ELSE NULLthis.
+              ELSE NULL
             END ${params.sortOrder === 'desc' ? 'DESC' : 'ASC'}
           `;
           break;
@@ -1206,9 +1206,30 @@ export class MatchTrackerDAL extends EventEmitter {
     try {
       const result = await fetchUserProfile(opponentCodeOrId);
 
-      const user : any = result?.data?.getConnectCode?.user || result?.data?.getUser;
+      // Previous logic assumed a specific structure
+      // const user : any = result?.data?.getConnectCode?.user || result?.data?.getUser;
 
-      user?.netplayProfiles?.forEach((profile: any) => {
+      // Updated logic to handle new schema
+      let user: any = null;
+      
+      if (result?.data?.getConnectCode?.user) {
+        user = result.data.getConnectCode.user;
+      } else if (result?.data?.getUser) {
+        user = result.data.getUser;
+      } else if (result?.data?.user) {
+        // New potential location based on schema change
+        user = result.data.user;
+      }
+
+      if (!user) {
+        console.error('User data not found in response:', result);
+        return ranks;
+      }
+
+      // Handle potential changes to netplayProfiles structure
+      const profiles = user.rankedNetplayProfileHistory || user.netplayProfiles || [];
+      
+      profiles.forEach((profile: any) => {
         if(!profile) { return };
         ranks.push({
           userId: user.fbUid,
@@ -1218,7 +1239,7 @@ export class MatchTrackerDAL extends EventEmitter {
           seasonDateEnd: profile.season?.endedAt,
           seasonId: profile.season?.id,
           seasonName: profile?.season?.name,
-          wasActiveSeason: profile.season.status === "ACTIVE",
+          wasActiveSeason: profile.season?.status === "ACTIVE",
           elo: profile.ratingOrdinal,
           wins: profile.wins,
           losses: profile.losses,
@@ -1228,9 +1249,9 @@ export class MatchTrackerDAL extends EventEmitter {
               name: c.character,
               gameCount: c.gameCount,
             }
-          })
-        })
-      })
+          }) || []
+        });
+      });
     } catch (err) {
       console.error("Error fetching:", err);
     }
