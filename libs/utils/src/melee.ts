@@ -47,13 +47,12 @@ export function characterNamesAreTheSame(name1: string, name2: string) {
   return normalizedCharacterNamesAreTheSame(normalized1, normalized2);
 }
 
-
 export async function fetchUserProfile(code: string) {
   const query = {
     operationName: "UserProfilePageQuery",
     variables: { cc: code, uid: code },
     query: `
-      fragment profileFieldsV2 on NetplayProfileV2 {
+      fragment profileFields on NetplayProfile {
         id
         ratingOrdinal
         ratingUpdateCount
@@ -84,11 +83,11 @@ export async function fetchUserProfile(code: string) {
           __typename
         }
         rankedNetplayProfile {
-          ...profileFieldsV2
+          ...profileFields
           __typename
         }
         rankedNetplayProfileHistory {
-          ...profileFieldsV2
+          ...profileFields
           season {
             id
             startedAt
@@ -102,16 +101,9 @@ export async function fetchUserProfile(code: string) {
         __typename
       }
 
-      query UserProfilePageQuery($cc: String!, $uid: String!) {
-        getUser(fbUid: $uid) {
+      query UserProfilePageQuery($cc: String, $uid: String) {
+        getUser(fbUid: $uid, connectCode: $cc) {
           ...userProfilePage
-          __typename
-        }
-        getConnectCode(code: $cc) {
-          user {
-            ...userProfilePage
-            __typename
-          }
           __typename
         }
       }
@@ -119,17 +111,25 @@ export async function fetchUserProfile(code: string) {
   };
 
   try {
-    const response = await axios.post('https://gql-gateway-dot-slippi.uc.r.appspot.com/graphql', query, {
-      headers: {
-        'Accept': '*/*',
-        'Content-Type': 'application/json',
-        'Origin': 'https://slippi.gg',
-        'Referer': 'https://slippi.gg/',
+    const response = await axios.post(
+      'https://internal.slippi.gg/graphql',
+      query,
+      {
+        headers: {
+          'Accept': '*/*',
+          'Content-Type': 'application/json',
+          'Origin': 'https://slippi.gg',
+          'Referer': 'https://slippi.gg/',
+        }
       }
-    });
+    );
     return response.data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
+  } catch (error: any) {
+    if (error.response) {
+      console.error('GraphQL error:', error.response.data);
+    } else {
+      console.error('Error fetching data:', error);
+    }
     throw error;
   }
 }

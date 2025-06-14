@@ -1204,8 +1204,9 @@ export class MatchTrackerDAL extends EventEmitter {
       return ranks;
     }
     try {
+      this.logger.info(`fetching user profile for code:, ${opponentCodeOrId}`);
       const result = await fetchUserProfile(opponentCodeOrId);
-
+      this.logger.info(`Successfully fetched user profile for code: ${opponentCodeOrId}`);
       // Previous logic assumed a specific structure
       // const user : any = result?.data?.getConnectCode?.user || result?.data?.getUser;
 
@@ -1222,7 +1223,8 @@ export class MatchTrackerDAL extends EventEmitter {
       }
 
       if (!user) {
-        console.error('User data not found in response:', result);
+        this.logger.error('Failed fetching user profile for:', opponentCodeOrId, 'data not found in response:', result);
+        console.error('Failed fetching user profile for:', opponentCodeOrId, 'data not found in response:', result);
         return ranks;
       }
 

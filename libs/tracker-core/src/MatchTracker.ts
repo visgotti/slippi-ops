@@ -292,7 +292,8 @@ export class MatchTracker extends MatchTrackerDAL {
           return;
         }
         didCheck = true;
-        this.checkForRepeatingPlayer(curIndex, res.data.result);
+        this.checkForRepeatingPlayer(curIndex, res.data?.result);
+
         if(!('error' in res)) {
           this.persistResults(res.data.result, res.data.stats);
         } else {
